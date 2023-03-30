@@ -83,6 +83,21 @@ export const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([])
   const [cartlength, setCartlength] = useState([]);
+  const [selected, setSelected] = useState(false);
+
+  const lowToHighPrice = () => {
+    const arr = shopData;
+    for (let index = 1; index <= arr.length - 1; index++) {
+      let io = arr[index];
+      let j = index - 1;
+      while (j >= 0 && arr[j].price > io.price) {
+        arr[j + 1] = arr[j];
+        j--;
+      }
+      arr[j + 1] = io;
+    }
+    console.log("low to hight price :", arr);
+  }
 
   const handleClearQuery = () => {
     setSearchQuery('');
@@ -124,6 +139,7 @@ export const HomeScreen = () => {
 
   useEffect(() => {
     getCartFromAsync();
+    lowToHighPrice();
   }, [])
 
   if (isLoading) {
