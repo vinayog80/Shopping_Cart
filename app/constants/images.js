@@ -19,6 +19,8 @@ const ellipse = require('../assets/images/Ellipse1.png')
 const disabledDecIMG = require('../assets/images/disableminus.png');
 const radioBtn1 = require('../assets/images/radiobtn.png')
 const radioBtn2 = require('../assets/images/radiobtn2.png')
+const heartOutline = require('../assets/images/heart.png');
+const heartFilled = require('../assets/images/heart2.png')
 
 // bottom tabs
 const home = require('../assets/images/home1.png');
@@ -49,5 +51,7 @@ export default {
     ellipse,
     disabledDecIMG,
     radioBtn1,
-    radioBtn2
+    radioBtn2,
+    heartOutline,
+    heartFilled
 };

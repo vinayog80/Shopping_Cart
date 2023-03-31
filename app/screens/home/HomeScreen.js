@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, View, TouchableOpacity, LogBox, Image, TextInput, Text, Dimensions, ScrollView, ActivityIndicator, FlatList, Alert, TouchableOpacityComponent } from 'react-native'
+import { SafeAreaView, View, TouchableOpacity, LogBox, Image, TextInput, Text, ScrollView, ActivityIndicator, FlatList, Alert, ToastAndroid } from 'react-native'
 import { images, SIZES, SHADOWS, COLORS } from '../../constants/index';
 import { useShoppingCartSource, useModalSource } from '../../hook/index';
 import { ConfigUrl } from '../../config';
@@ -10,7 +10,7 @@ import Modal from "react-native-modal";
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
 
-function RenderHeader({ navigation, cartlength }) {
+function RenderHeader({ navigation, cartlength, navigateToFavourite }) {
   return (
     <View
       style={{
@@ -29,11 +29,10 @@ function RenderHeader({ navigation, cartlength }) {
         <Text style={{ marginTop: 15, fontSize: 16, fontWeight: '700', color: COLORS.black, marginLeft: 5 }}>{'hi John Doe!'}</Text>
       </View>
 
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+        <Text style={{ fontSize: 15, color: "#000", fontWeight: "700" }}>{(cartlength)}</Text>
         <TouchableOpacity
           style={{
-            height: 40,
-            width: 40,
             justifyContent: 'center',
             alignItems: 'center',
           }}
@@ -42,12 +41,17 @@ function RenderHeader({ navigation, cartlength }) {
           <Image
             source={images.shopBag}
             style={{
-              width: 35,
-              height: 35,
+              width: 30,
+              height: 30,
             }}
             resizeMode='contain'
           />
-          <Text style={{ fontSize: 15, color: "#000", fontWeight: "700" }}>{(cartlength)}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={.9}
+          onPress={navigateToFavourite}
+        >
+          <Image source={images.heartOutline} style={{ marginLeft: 15, width: 30, height: 30 }} resizeMode='contain' />
         </TouchableOpacity>
       </View>
     </View >
@@ -78,7 +82,7 @@ function RenderSortModal({
         transparent={transparent}
         onBackdropPress={() => setIsSortModal(false)}
       >
-        <View style={{ width: '100%', height: '70%', backgroundColor: COLORS.gray, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+        <View style={{ width: '100%', height: '70%', backgroundColor: COLORS.white, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
           <TouchableOpacity style={{ alignSelf: 'center' }} activeOpacity={.8} onPress={() => setIsSortModal(false)}>
             <Image source={images.closeIcon} style={{ width: 40, height: 40, marginTop: 10 }} resizeMode='contain' />
           </TouchableOpacity>
@@ -95,7 +99,7 @@ function RenderSortModal({
                 width: 320,
                 height: 65,
                 backgroundColor: COLORS.lightGray,
-                ...SHADOWS.dark,
+                ...SHADOWS.medium,
                 paddingHorizontal: 40,
                 flexDirection: 'row',
                 justifyContent: 'space-between'
@@ -194,6 +198,8 @@ export const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([])
   const [cartlength, setCartlength] = useState([]);
+  const [favourites, setfavourites] = useState([]);
+  const [selectedFavourite, setSelectedFavourite] = useState(false);
   const [islowSortSelected, setIsLowSelected] = useState(false);
   const [isHightSortSelected, setISHighSortSelected] = useState(false);
   const [isSortAscendingSelected, setIsSortAscendingSelected] = useState(false);
@@ -308,19 +314,54 @@ export const HomeScreen = () => {
     }
   }
 
+  const getFavouriteFromAsync = async () => {
+    try {
+      let value = JSON.parse(await AsyncStorage.getItem('@favProduct'));
+      if (value != null) {
+        setfavourites(value)
+      }
+      else return null;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleAddToCart = (item) => {
     const check = cart.some(cartItem => cartItem.id == item.id);
     if (!check) {
       let temp = [...cart, { ...item, qty: 1 }];
       setCart(temp)
+      ToastAndroid.show(
+        'Item Added Successfully to cart',
+        ToastAndroid.SHORT,
+      );
       AsyncStorage.setItem('@product', JSON.stringify(temp));
     }
     else return Alert.alert('item already added to cart!');
     getCartFromAsync();
   }
 
+  const handleAddToFavourite = (item) => {
+    const temp = favourites.some(cartItem => cartItem.id == item.id);
+    if (!temp) {
+      let favouriteItem = [...favourites, { ...item }];
+      setfavourites(favouriteItem)
+      setSelectedFavourite(true);
+      AsyncStorage.setItem('@favProduct', JSON.stringify(favouriteItem));
+      ToastAndroid.show(
+        'Added to favourites',
+        ToastAndroid.SHORT,
+      );
+      console.log(favouriteItem)
+    }
+    else return Alert.alert('already added to favourites !');
+    getFavouriteFromAsync();
+  }
+
+
   useEffect(() => {
     getCartFromAsync();
+    getFavouriteFromAsync();
   }, [])
 
   if (isLoading) {
@@ -340,6 +381,7 @@ export const HomeScreen = () => {
         <RenderHeader
           navigation={() => navigation.navigate('CartScreen')}
           cartlength={cartlength.length}
+          navigateToFavourite={() => navigation.navigate('FavouriteScreen', { selectedFavourite: selectedFavourite })}
         />
         <View style={{
           marginTop: SIZES.large2vina,
@@ -400,6 +442,9 @@ export const HomeScreen = () => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ProductDetails', {
                     data: item,
+                    handleAddToCart,
+                    handleAddToFavourite,
+                    selectedFavourite
                   })}
                   style={{
                     width: 168,

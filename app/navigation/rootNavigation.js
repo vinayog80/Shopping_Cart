@@ -6,6 +6,7 @@ import Account from "../screens/account/Account";
 import NotificationScreen from "../screens/Notification/NotificationScreen";
 import { CartScreen } from "../screens/cart/CartScreen";
 import TabBar from "./tabNavigation";
+import { FavouriteScreen } from "../screens/home/FavouriteScreen";
 
 const RootStack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export const RootNavigation = () => {
                 <RootStack.Screen name="NotificationScreen" component={NotificationScreen} />
                 <RootStack.Screen options={{ headerShown: false, gestureDirection: "horizontal" }} name="CartScreen" component={CartScreen} />
                 <RootStack.Screen name="Account" component={Account} />
+                <RootStack.Screen name="FavouriteScreen" component={FavouriteScreen} />
             </RootStack.Navigator>
         </NavigationContainer>
     );

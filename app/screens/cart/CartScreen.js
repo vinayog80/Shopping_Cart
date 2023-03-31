@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet, RefreshControl, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet, RefreshControl, ScrollView, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, SHADOWS, images } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
-import { errorComponent } from '../../config/helpers';
+
+const EmptyCartComponent = ({ navigation }) => {
+    return (
+        <View style={{ alignSelf: 'center' }}>
+            <Text style={{ textAlign: 'center', color: COLORS.black, fontWeight: 'bold', fontSize: 16 }}>your cart is Empty!</Text>
+            <TouchableOpacity onPress={navigation} activeOpacity={.8} style={{ alignSelf: 'center', marginTop: 20, width: 200, height: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 7, backgroundColor: COLORS.primary }}>
+                <Text style={{ color: COLORS.white, fontWeight: '600', }}>{'Add Products'}</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 export const CartScreen = () => {
     const [basket, setBasket] = useState([]);
@@ -71,19 +81,19 @@ export const CartScreen = () => {
     }
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.lightGray }}>
+            <TouchableOpacity
+                activeOpacity={.8}
+                style={{ alignSelf: 'flex-start', marginBottom: 10 }}
+                onPress={() => navigation.goBack()}
+            >
+                <ImageBackground
+                    source={images.ellipse}
+                    style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center', ...SHADOWS.dark }}>
+                    <Image source={images.leftChevron} />
+                </ImageBackground>
+            </TouchableOpacity>
             <View style={{ alignSelf: 'center', marginTop: 10 }}>
-                <TouchableOpacity
-                    activeOpacity={.8}
-                    style={{ alignSelf: 'flex-start', marginBottom: 10 }}
-                    onPress={() => navigation.goBack()}
-                >
-                    <ImageBackground
-                        source={images.ellipse}
-                        style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center', ...SHADOWS.dark }}>
-                        <Image source={images.leftChevron} />
-                    </ImageBackground>
-                </TouchableOpacity>
-                {basket.length <= 0 ? (errorComponent()) :
+                {basket.length <= 0 ? (<EmptyCartComponent navigation={() => navigation.navigate('HomeScreen')} />) :
                     (<ScrollView
                         decelerationRate={5}
                         contentContainerStyle={{ paddingBottom: 100 }}

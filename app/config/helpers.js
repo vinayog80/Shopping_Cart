@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, } from "react-native";
 import { COLORS, images } from "../constants/index";
 
 export const errorComponent = () => {
@@ -14,7 +14,6 @@ export const errorComponent = () => {
         </View>
     )
 }
-
 
 export const warningComponent = () => {
     return (

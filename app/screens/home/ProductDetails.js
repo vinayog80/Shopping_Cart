@@ -1,24 +1,37 @@
 import React from 'react'
 import { SafeAreaView, Text, StyleSheet, View, Image, TouchableOpacity, ScrollView, ImageBackground } from 'react-native'
 import { COLORS, SHADOWS, images } from '../../constants';
+import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 
 export default function ProductDetails({ route, navigation }) {
-    const { data, handleAddToCart } = route.params;
+    const { data, handleAddToCart, handleAddToFavourite, selectedFavourite } = route.params;
     return (
         <SafeAreaView style={{ flex: 1, height: '100%' }}>
             <ScrollView showsHorizontalScrollIndicator={false}>
                 <View style={styles.mainContent}>
-                    <TouchableOpacity
-                        activeOpacity={.8}
-                        style={{ alignSelf: 'flex-start', marginBottom: 10 }}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <ImageBackground
-                            source={images.ellipse}
-                            style={{ width: 52, height: 52, alignItems: 'center', borderRadius: 50, justifyContent: 'center', backgroundColor: COLORS.white, ...SHADOWS.dark }}>
-                            <Image source={images.leftChevron} />
-                        </ImageBackground>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <TouchableOpacity
+                            activeOpacity={.8}
+                            style={{ alignSelf: 'flex-start', marginBottom: 10 }}
+                            onPress={() => navigation.goBack()}
+                        >
+                            <ImageBackground
+                                source={images.ellipse}
+                                style={{ width: 52, height: 52, alignItems: 'center', borderRadius: 50, justifyContent: 'center', backgroundColor: COLORS.white, ...SHADOWS.dark }}>
+                                <Image source={images.leftChevron} />
+                            </ImageBackground>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handleAddToFavourite(data)}
+                            activeOpacity={.8}
+                            style={{ marginTop: 10 }}
+                        >
+                            <AntDesign
+                                name={selectedFavourite ? 'heart' : 'hearto'}
+                                size={25} color={selectedFavourite ? 'red' : 'black'}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imageContainer}>
                         <Image
                             style={styles.productImage}
@@ -31,52 +44,7 @@ export default function ProductDetails({ route, navigation }) {
                             {data.title}
                         </Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flexDirection: "column" }}>
-                            <Text style={{
-                                fontWeight: '600',
-                                fontSize: 18,
-                                lineHeight: 40,
-                                color: "#161A1D",
-                            }}>Quantity</Text>
-                            <View style={{
-                                flexDirection: 'row',
-                                borderRadius: 5,
-                                width: 156,
-                                backgroundColor: "#fff",
-                                height: 45,
-                                justifyContent: "center",
-                                shadowColor: '#FFE5E5',
-                                shadowOffset: { width: 2, height: 2 },
-                                shadowOpacity: 15,
-                                shadowRadius: 2,
-                            }}>
-                                <TouchableOpacity style={{ width: 30, alignItems: "center", justifyContent: "center" }} activeOpacity={.7}>
-                                    <Image style={{ width: 25, height: 25, marginRight: 20 }} source={images.removeQTYIMG} resizeMode="contain" />
-                                </TouchableOpacity>
-                                <View style={{ width: 1, height: 45, backgroundColor: "#000", opacity: 0.08 }} />
-                                <View style={{ width: 50, alignItems: "center", justifyContent: "center" }} >
-                                    <Text style={{ textAlign: "center" }}>{0}</Text>
-                                </View>
-                                <View style={{ width: 1, height: 45, backgroundColor: "#000", opacity: 0.08 }} />
-                                <TouchableOpacity style={{ alignItems: "center", justifyContent: "center" }} activeOpacity={.7}>
-                                    <Image source={images.addQTYIMG} style={{ width: 25, height: 25, marginLeft: 20 }} resizeMode="contain" />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ marginTop: 35 }}>
-                            <TouchableOpacity
-                                activeOpacity={.8}
-                                style={{ alignSelf: 'flex-start', marginBottom: 10 }}
-                            >
-                                <ImageBackground
-                                    source={images.ellipse}
-                                    style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Image source={images.heart} />
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+
                 </View>
 
                 <View style={{ paddingHorizontal: 20 }}>
@@ -91,7 +59,7 @@ export default function ProductDetails({ route, navigation }) {
                     {data.description}
                 </Text>
                 <Text style={{ paddingHorizontal: 20, marginTop: 20 }}>Category: {data.category}</Text>
-                <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartBtn}>
+                <TouchableOpacity onPress={() => handleAddToCart(data)} style={styles.addToCartBtn}>
                     <Text
                         style={{
                             color: 'white',
