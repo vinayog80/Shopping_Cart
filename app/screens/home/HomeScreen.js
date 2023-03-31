@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, View, TouchableOpacity, LogBox, Image, TextInput, Text, Dimensions, ScrollView, ActivityIndicator, FlatList, Alert } from 'react-native'
+import { SafeAreaView, View, TouchableOpacity, LogBox, Image, TextInput, Text, Dimensions, ScrollView, ActivityIndicator, FlatList, Alert, TouchableOpacityComponent } from 'react-native'
 import { images, SIZES, SHADOWS, COLORS } from '../../constants/index';
 import { useShoppingCartSource, useModalSource } from '../../hook/index';
 import { ConfigUrl } from '../../config';
@@ -16,7 +16,7 @@ function RenderHeader({ navigation, cartlength }) {
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
         width: '100%',
         marginVertical: 10 * 2
       }}>
@@ -26,7 +26,7 @@ function RenderHeader({ navigation, cartlength }) {
           style={{ width: 40, height: 40 }}
           resizeMode='contain'
         />
-        <Text style={{ marginTop: 15, fontSize: 16, fontWeight: '700', color: COLORS.black, marginLeft: 8 }}>{'hi John Doe!'}</Text>
+        <Text style={{ marginTop: 15, fontSize: 16, fontWeight: '700', color: COLORS.black, marginLeft: 5 }}>{'hi John Doe!'}</Text>
       </View>
 
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -54,7 +54,20 @@ function RenderHeader({ navigation, cartlength }) {
   )
 }
 
-function RenderSortModal({ isSortModal, setIsSortModal, handleSortModal, transparent }) {
+function RenderSortModal({
+  isSortModal,
+  setIsSortModal,
+  handleSortModal,
+  transparent,
+  islowSortSelected,
+  isHightSortSelected,
+  isSortAscendingSelected,
+  isSortDescendingSelected,
+  handleSortBylowToHighPrice,
+  handleSortByHighToLowPrice,
+  handleSortByAscendingOrder,
+  handleSortByDescendingOrder
+}) {
   return (
     <>
       <Modal
@@ -65,12 +78,110 @@ function RenderSortModal({ isSortModal, setIsSortModal, handleSortModal, transpa
         transparent={transparent}
         onBackdropPress={() => setIsSortModal(false)}
       >
-        <View style={{ width: '100%', height: '70%', backgroundColor: '#fff', borderRadius: 30 }}>
+        <View style={{ width: '100%', height: '70%', backgroundColor: COLORS.gray, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
           <TouchableOpacity style={{ alignSelf: 'center' }} activeOpacity={.8} onPress={() => setIsSortModal(false)}>
             <Image source={images.closeIcon} style={{ width: 40, height: 40, marginTop: 10 }} resizeMode='contain' />
           </TouchableOpacity>
+          <View style={{ marginTop: 20, flexDirection: 'column', marginVertical: 10, alignSelf: 'center' }}>
+            <TouchableOpacity
+              onPress={handleSortBylowToHighPrice}
+              activeOpacity={.8}
+              style={{
+                borderWidth: islowSortSelected ? 1 : 0,
+                paddingHorizontal: 40,
+                borderRadius: 8,
+                alignItems: 'center',
+                marginBottom: 20,
+                width: 320,
+                height: 65,
+                backgroundColor: COLORS.lightGray,
+                ...SHADOWS.dark,
+                paddingHorizontal: 40,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Image
+                source={islowSortSelected ? images.radioBtn2 : images.radioBtn1}
+                style={{ width: 30, height: 30, }}
+                resizeMode='contain'
+              />
+              <Text style={{ textAlign: 'right', color: COLORS.black, fontWeight: '600' }}>{'low to high price'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSortByHighToLowPrice}
+              activeOpacity={.8}
+              style={{
+                borderWidth: isHightSortSelected ? 1 : 0,
+                paddingHorizontal: 40,
+                borderRadius: 8,
+                alignItems: 'center',
+                marginBottom: 20,
+                width: 320,
+                height: 65,
+                backgroundColor: COLORS.lightGray,
+                ...SHADOWS.dark,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Image
+                source={isHightSortSelected ? images.radioBtn2 : images.radioBtn1}
+                style={{ width: 30, height: 30 }}
+                resizeMode='contain'
+              />
+              <Text style={{ textAlign: 'right', color: COLORS.black, fontWeight: '600' }}>{'high to low price'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSortByAscendingOrder}
+              activeOpacity={.8}
+              style={{
+                borderWidth: isSortAscendingSelected ? 1 : 0,
+                paddingHorizontal: 40,
+                borderRadius: 8,
+                alignItems: 'center',
+                width: 320,
+                marginBottom: 20,
+                height: 65,
+                backgroundColor: COLORS.lightGray,
+                ...SHADOWS.dark,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Image
+                source={isSortAscendingSelected ? images.radioBtn2 : images.radioBtn1}
+                style={{ width: 30, height: 30 }}
+                resizeMode='contain'
+              />
+              <Text style={{ textAlign: 'right', color: COLORS.black, fontWeight: '600' }}>{'sort by ascending'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSortByDescendingOrder}
+              activeOpacity={.8}
+              style={{
+                borderWidth: isSortDescendingSelected ? 1 : 0,
+                paddingHorizontal: 40,
+                borderRadius: 8,
+                alignItems: 'center',
+                width: 320,
+                marginBottom: 20,
+                height: 65,
+                backgroundColor: COLORS.lightGray,
+                ...SHADOWS.dark,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Image
+                source={isSortDescendingSelected ? images.radioBtn2 : images.radioBtn1}
+                style={{ width: 30, height: 30 }}
+                resizeMode='contain'
+              />
+              <Text style={{ textAlign: 'right', color: COLORS.black, fontWeight: '600' }}>{'sort by descending'}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
       </Modal>
     </>
   )
@@ -83,24 +194,97 @@ export const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([])
   const [cartlength, setCartlength] = useState([]);
-  const [selected, setSelected] = useState(false);
+  const [islowSortSelected, setIsLowSelected] = useState(false);
+  const [isHightSortSelected, setISHighSortSelected] = useState(false);
+  const [isSortAscendingSelected, setIsSortAscendingSelected] = useState(false);
+  const [isSortDescendingSelected, setIsSortDescendingSelected] = useState(false);
 
-  const lowToHighPrice = () => {
-    const arr = shopData;
-    for (let index = 1; index <= arr.length - 1; index++) {
-      let io = arr[index];
-      let j = index - 1;
-      while (j >= 0 && arr[j].price > io.price) {
-        arr[j + 1] = arr[j];
-        j--;
+  const handleSortBylowToHighPrice = () => {
+    setIsLowSelected(!islowSortSelected);
+    setISHighSortSelected(false)
+    setIsSortAscendingSelected(false)
+    setIsSortDescendingSelected(false);
+
+    let arr = shopData;
+    for (let index = 0; index <= arr.length - 1; index++) {
+      for (let j = index + 1; j <= arr.length - 1; j++) {
+        if (arr[index].price > arr[j].price) {
+          let temp = arr[index];
+          arr[index] = arr[j];
+          arr[j] = temp;
+        }
       }
-      arr[j + 1] = io;
     }
-    console.log("low to hight price :", arr);
+    if (islowSortSelected) setShopData(arr);
+    else setShopData(shopData);
+  }
+  const handleSortByHighToLowPrice = () => {
+    setISHighSortSelected(!isHightSortSelected);
+    setIsLowSelected(false);
+    setIsSortAscendingSelected(false);
+    setIsSortDescendingSelected(false);
+
+    let arr = shopData;
+    for (let index = 0; index <= arr.length - 1; index++) {
+      for (let j = index + 1; j <= arr.length - 1; j++) {
+        if (arr[index].price < arr[j].price) {
+          let temp = arr[index];
+          arr[index] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
+    if (isHightSortSelected) setShopData(arr);
+    else setShopData(shopData)
+  }
+  const handleSortByAscendingOrder = () => {
+    setIsSortAscendingSelected(!isSortAscendingSelected);
+    setIsLowSelected(false);
+    setISHighSortSelected(false);
+    setIsSortDescendingSelected(false);
+
+    let words = shopData;
+    let wordlen = words.length;
+    let end = wordlen - 1;
+
+    for (let index = 0; index <= wordlen; index++) {
+      for (let j = 0; j < end; j++) {
+        if (words[j].title.localeCompare(words[j + 1].title) > 0) {
+          let temp = words[j]
+          words[j] = words[j + 1];
+          words[j + 1] = temp;
+        }
+      }
+      end - end - 1;
+    }
+    if (isSortAscendingSelected) setShopData(words);
+    else setShopData(shopData);
+  }
+  const handleSortByDescendingOrder = () => {
+    setIsSortDescendingSelected(!isSortDescendingSelected);
+    setIsLowSelected(false);
+    setISHighSortSelected(false);
+    setIsSortAscendingSelected(false);
+
+    let sortedArr = shopData;
+    let right = sortedArr.length - 1;
+    for (let i = 0; i <= right; i++) {
+      for (let j = 0; j < right; j++) {
+        if (sortedArr[j + 1].title.localeCompare(sortedArr[j].title) > 0) {
+          let store = sortedArr[j + 1];
+          sortedArr[j + 1] = sortedArr[j];
+          sortedArr[j] = store;
+        }
+      }
+      right - right - 1;
+    }
+    if (isSortDescendingSelected) setShopData(sortedArr);
+    else setShopData(shopData);
   }
 
   const handleClearQuery = () => {
     setSearchQuery('');
+    setShopData(shopData)
   }
 
   const handleSearchQuery = (event) => {
@@ -129,9 +313,7 @@ export const HomeScreen = () => {
     if (!check) {
       let temp = [...cart, { ...item, qty: 1 }];
       setCart(temp)
-      let value = AsyncStorage.setItem('@product', JSON.stringify(temp));
-      console.log('saved', value);
-      console.log('item : ', temp)
+      AsyncStorage.setItem('@product', JSON.stringify(temp));
     }
     else return Alert.alert('item already added to cart!');
     getCartFromAsync();
@@ -139,7 +321,6 @@ export const HomeScreen = () => {
 
   useEffect(() => {
     getCartFromAsync();
-    lowToHighPrice();
   }, [])
 
   if (isLoading) {
@@ -261,6 +442,14 @@ export const HomeScreen = () => {
           setIsSortModal={setIsSortModal}
           handleSortModal={handleSortModal}
           transparent={true}
+          islowSortSelected={islowSortSelected}
+          isHightSortSelected={isHightSortSelected}
+          handleSortBylowToHighPrice={() => handleSortBylowToHighPrice()}
+          handleSortByHighToLowPrice={() => handleSortByHighToLowPrice()}
+          isSortAscendingSelected={isSortAscendingSelected}
+          isSortDescendingSelected={isSortDescendingSelected}
+          handleSortByAscendingOrder={() => handleSortByAscendingOrder()}
+          handleSortByDescendingOrder={() => handleSortByDescendingOrder()}
         />}
       </ScrollView>
     </SafeAreaView>

@@ -17,6 +17,8 @@ const leftChevron = require('../assets/images/Vector1.png')
 const heart = require('../assets/images/Vector2.png');
 const ellipse = require('../assets/images/Ellipse1.png')
 const disabledDecIMG = require('../assets/images/disableminus.png');
+const radioBtn1 = require('../assets/images/radiobtn.png')
+const radioBtn2 = require('../assets/images/radiobtn2.png')
 
 // bottom tabs
 const home = require('../assets/images/home1.png');
@@ -45,5 +47,7 @@ export default {
     leftChevron,
     heart,
     ellipse,
-    disabledDecIMG
+    disabledDecIMG,
+    radioBtn1,
+    radioBtn2
 };

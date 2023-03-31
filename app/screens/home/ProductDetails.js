@@ -15,7 +15,7 @@ export default function ProductDetails({ route, navigation }) {
                     >
                         <ImageBackground
                             source={images.ellipse}
-                            style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
+                            style={{ width: 52, height: 52, alignItems: 'center', borderRadius: 50, justifyContent: 'center', backgroundColor: COLORS.white, ...SHADOWS.dark }}>
                             <Image source={images.leftChevron} />
                         </ImageBackground>
                     </TouchableOpacity>

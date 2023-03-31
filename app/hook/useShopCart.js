@@ -16,7 +16,6 @@ export const useShoppingCartSource = (ConfigUrl) => {
             else {
                 setShopData(data);
                 setIsLoading(false);
-                console.log('data', data);
             }
         } catch (error) {
             setError(error);
