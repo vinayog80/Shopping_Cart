@@ -98,7 +98,7 @@ function RenderSortModal({
                 marginBottom: 20,
                 width: 320,
                 height: 65,
-                backgroundColor: COLORS.lightGray,
+                backgroundColor: islowSortSelected ? COLORS.itemGray : COLORS.lightGray,
                 ...SHADOWS.medium,
                 paddingHorizontal: 40,
                 flexDirection: 'row',
@@ -123,7 +123,7 @@ function RenderSortModal({
                 marginBottom: 20,
                 width: 320,
                 height: 65,
-                backgroundColor: COLORS.lightGray,
+                backgroundColor: isHightSortSelected ? COLORS.itemGray : COLORS.lightGray,
                 ...SHADOWS.dark,
                 flexDirection: 'row',
                 justifyContent: 'space-between'
@@ -147,7 +147,7 @@ function RenderSortModal({
                 width: 320,
                 marginBottom: 20,
                 height: 65,
-                backgroundColor: COLORS.lightGray,
+                backgroundColor: isSortAscendingSelected ? COLORS.itemGray : COLORS.lightGray,
                 ...SHADOWS.dark,
                 flexDirection: 'row',
                 justifyContent: 'space-between'
@@ -171,7 +171,7 @@ function RenderSortModal({
                 width: 320,
                 marginBottom: 20,
                 height: 65,
-                backgroundColor: COLORS.lightGray,
+                backgroundColor: isSortDescendingSelected ? COLORS.itemGray : COLORS.lightGray,
                 ...SHADOWS.dark,
                 flexDirection: 'row',
                 justifyContent: 'space-between'
