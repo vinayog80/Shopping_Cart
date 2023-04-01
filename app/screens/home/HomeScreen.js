@@ -193,7 +193,7 @@ function RenderSortModal({
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
-  const { shopData, error, isLoading, setShopData } = useShoppingCartSource(ConfigUrl);
+  const { shopData, loadShopData, isLoading, setShopData } = useShoppingCartSource(ConfigUrl);
   const { isSortModal, setIsSortModal, handleSortModal } = useModalSource();
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([])
@@ -290,7 +290,7 @@ export const HomeScreen = () => {
 
   const handleClearQuery = () => {
     setSearchQuery('');
-    setShopData(shopData)
+    loadShopData();
   }
 
   const handleSearchQuery = (event) => {

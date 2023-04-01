@@ -27,5 +27,5 @@ export const useShoppingCartSource = (ConfigUrl) => {
         loadShopData();
     }, [ConfigUrl]);
 
-    return { shopData, isLoading, error, setShopData, setIsLoading, setError };
+    return { shopData, isLoading, error, setShopData, setIsLoading, setError, loadShopData };
 }
